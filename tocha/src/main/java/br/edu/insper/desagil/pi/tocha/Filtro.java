@@ -130,17 +130,7 @@ public class Filtro {
 
             // calcula saída
 
-            for (int y = 1; y < altura - 1; y++) {
-                for (int x = 1; x < largura - 1; x++) {
-                    double s = 0;
-                    for (int dy = -1; dy < 2; dy++) {
-                        for (int dx = -1; dx < 2; dx++) {
-                            s += entrada[y + dy][x + dx] * kernel[dy + 1][dx + 1];
-                        }
-                    }
-                    saida[y - 1][x - 1] = (int) s;
-                }
-            }
+            extracted(altura, largura, entrada, kernel, saida);
 
             return new Imagem(saida);
         } else if (tipo.equals("laplace")) {
@@ -190,6 +180,20 @@ public class Filtro {
             return new Imagem(saida);
         } else {
             throw new IllegalStateException("tipo inválido");
+        }
+    }
+
+    private static void extracted(int altura, int largura, int[][] entrada, double[][] kernel, int[][] saida) {
+        for (int y = 1; y < altura - 1; y++) {
+            for (int x = 1; x < largura - 1; x++) {
+                double s = 0;
+                for (int dy = -1; dy < 2; dy++) {
+                    for (int dx = -1; dx < 2; dx++) {
+                        s += entrada[y + dy][x + dx] * kernel[dy + 1][dx + 1];
+                    }
+                }
+                saida[y - 1][x - 1] = (int) s;
+            }
         }
     }
 }
